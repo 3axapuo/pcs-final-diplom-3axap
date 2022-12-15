@@ -12,7 +12,7 @@ import java.util.*;
  * без использования синонимов и прочих приёмов нечёткого поиска.
  */
 public class BooleanSearchEngine implements SearchEngine {
-    private static final Map<String, List<PageEntry>> indexingOfFoundWords = new HashMap<>(); // индекс найденных слов
+    private final Map<String, List<PageEntry>> indexingOfFoundWords = new HashMap<>(); // индекс найденных слов
 
     public BooleanSearchEngine(File[] files) throws IOException, NullPointerException {
         for (File Extension : Objects.requireNonNull(files)) {
@@ -28,7 +28,7 @@ public class BooleanSearchEngine implements SearchEngine {
     }
 
     // Метод переноса слов в структуру карты и подсчет количества одинаковых слов без учета регистра (мы хотим регистро-независимый поиск).
-    private static void transferTheMapAndCalculateWords(Map<String, Integer> hashMapWords, String[] words) {
+    private void transferTheMapAndCalculateWords(Map<String, Integer> hashMapWords, String[] words) {
         for (String word : words) {
             if (hashMapWords.containsKey(word)) { // если слово обнаружено больше одного раза
                 hashMapWords.put(word.toLowerCase(), hashMapWords.get(word) + 1); //Он есть в карте. Значит он нам уже встречался. Вынимаем текущее значение для ключа (нашего слова), увеличиваем это число на 1 и вставляем обратно в карту.
@@ -39,7 +39,7 @@ public class BooleanSearchEngine implements SearchEngine {
     }
 
     // Метод записи в карту (индексации) общего результата найденных слов во всех файлах.
-    private static void writingToTheIndexingOfFoundWords(Map<String, Integer> hashMapWords, File Extension, int countingPage) {
+    private void writingToTheIndexingOfFoundWords(Map<String, Integer> hashMapWords, File Extension, int countingPage) {
         for (Map.Entry<String, Integer> entry : hashMapWords.entrySet()) {
             List<PageEntry> wordSearchPageResult; // создаем массив для хранения результата поиска по странично слов
             if (indexingOfFoundWords.containsKey(entry.getKey())) { // проверка на наличие слова в индексе
